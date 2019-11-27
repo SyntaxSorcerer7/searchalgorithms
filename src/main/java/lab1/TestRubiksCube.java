@@ -7,12 +7,8 @@ import javax.swing.JOptionPane;
 import aima.core.agent.Action;
 import aima.core.search.framework.SearchForActions;
 import aima.core.search.framework.problem.Problem;
-import aima.core.search.framework.qsearch.GraphSearch;
 import aima.core.search.framework.qsearch.TreeSearch;
 import aima.core.search.informed.AStarSearch;
-import aima.core.search.uninformed.BreadthFirstSearch;
-import aima.core.search.uninformed.DepthFirstSearch;
-import aima.core.search.uninformed.DepthLimitedSearch;
 import lab1.util.SimpleCubeViewer;
 
 public class TestRubiksCube {
@@ -21,7 +17,7 @@ public class TestRubiksCube {
 
 		SimpleCubeViewer scv = new SimpleCubeViewer(400, 400);
 		
-		RubiksCube rubiksCube = new RubiksCube(3, 4);
+		RubiksCube rubiksCube = new RubiksCube(3, 5);
 		
 		System.out.println("Initial moves: " + rubiksCube.getInitialMoves());
 		scv.showMoves(rubiksCube.getInitialMoves());
@@ -33,7 +29,11 @@ public class TestRubiksCube {
 		//SearchForActions search = new BreadthFirstSearch(new TreeSearch());
 		//SearchForActions search = new DepthFirstSearch(new GraphSearch());
 		//SearchForActions search = new DepthFirstSearch(new TreeSearch());
-		SearchForActions search = new AStarSearch(new TreeSearch(), new ManhattanDistance(rubiksCube));
+		//SearchForActions search = new AStarSearch(new TreeSearch(), new ManhattanDistance(rubiksCube));
+		//SearchForActions search = new AStarSearch(new TreeSearch(), new CornerManhattanDistance(rubiksCube));
+
+		//SearchForActions search = new AStarSearch(new TreeSearch(), new EdgeManhattanDistance(rubiksCube));
+		SearchForActions search = new AStarSearch(new TreeSearch(), new HammingDistance(rubiksCube));
 
 		long start = Calendar.getInstance().getTimeInMillis();
 		List<Action> solution;
