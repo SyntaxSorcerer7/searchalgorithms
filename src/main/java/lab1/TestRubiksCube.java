@@ -5,10 +5,17 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import aima.core.agent.Action;
+import aima.core.search.framework.NodeExpander;
 import aima.core.search.framework.SearchForActions;
+import aima.core.search.framework.evalfunc.EvaluationFunction;
 import aima.core.search.framework.problem.Problem;
 import aima.core.search.framework.qsearch.TreeSearch;
+import aima.core.search.informed.AStarEvaluationFunction;
 import aima.core.search.informed.AStarSearch;
+import aima.core.search.informed.RecursiveBestFirstSearch;
+import aima.core.search.local.HillClimbingSearch;
+import aima.core.search.uninformed.DepthLimitedSearch;
+import aima.core.search.uninformed.IterativeDeepeningSearch;
 import lab1.util.SimpleCubeViewer;
 
 public class TestRubiksCube {
@@ -17,7 +24,7 @@ public class TestRubiksCube {
 
 		SimpleCubeViewer scv = new SimpleCubeViewer(400, 400);
 		
-		RubiksCube rubiksCube = new RubiksCube(3, 5);
+		RubiksCube rubiksCube = new RubiksCube(3, 4);
 		
 		System.out.println("Initial moves: " + rubiksCube.getInitialMoves());
 		scv.showMoves(rubiksCube.getInitialMoves());
@@ -26,14 +33,18 @@ public class TestRubiksCube {
 				RubiksCubeFunctionFactory.getResultFunction(), new RCgoalTest());
 
 		//SearchForActions search = new DepthLimitedSearch(22);
+		//SearchForActions search = new IterativeDeepeningSearch(new NodeExpander());
 		//SearchForActions search = new BreadthFirstSearch(new TreeSearch());
 		//SearchForActions search = new DepthFirstSearch(new GraphSearch());
 		//SearchForActions search = new DepthFirstSearch(new TreeSearch());
 		//SearchForActions search = new AStarSearch(new TreeSearch(), new ManhattanDistance(rubiksCube));
 		//SearchForActions search = new AStarSearch(new TreeSearch(), new CornerManhattanDistance(rubiksCube));
 
+		//SearchForActions search = new AStarSearch(new TreeSearch(), new HammingDistance(rubiksCube));
+		//SearchForActions search = new HillClimbingSearch(new EdgeManhattanDistance(rubiksCube), new NodeExpander());
+
 		//SearchForActions search = new AStarSearch(new TreeSearch(), new EdgeManhattanDistance(rubiksCube));
-		SearchForActions search = new AStarSearch(new TreeSearch(), new HammingDistance(rubiksCube));
+		SearchForActions search = new RecursiveBestFirstSearch(new AStarEvaluationFunction(new EdgeManhattanDistance(rubiksCube)));
 
 		long start = Calendar.getInstance().getTimeInMillis();
 		List<Action> solution;
